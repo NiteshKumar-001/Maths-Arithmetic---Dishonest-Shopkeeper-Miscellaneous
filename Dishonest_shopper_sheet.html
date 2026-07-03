@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths(Arithmetic) - Dishonest Shopkeeper & Miscellaneous</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: transparent;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h1 {
+            color: #111827;
+            font-size: 28px;
+        }
+
+        .question-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 16px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .exam-tag {
+            color: #d97706;
+            font-size: 14px;
+            font-weight: 700;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 14px 16px;
+            font-size: 15px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            color: #374151;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        .option-btn.correct {
+            background-color: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .option-btn.wrong {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .feedback-box {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            background-color: #eff6ff;
+            color: #1e3a8a;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 60px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .submit-btn {
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .final-score-container {
+            display: none;
+            background-color: #10b981;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="quiz-header">
+        <h1>Maths(Arithmetic) - Dishonest Shopkeeper & Miscellaneous</h1>
+    </div>
+
+    <div id="quiz-list"></div>
+
+    <div class="submit-section">
+        <button class="submit-btn" id="submit-btn" onclick="showFinalScore()">Submit Quiz</button>
+        <div class="final-score-container" id="final-score-container">
+            Your Final Score: <span id="final-score">0</span> / <span id="total-score">0</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        { q: "1. A dishonest shopkeeper promises to sell his goods at cost price. However, he uses a weight that actually weighs 26% less than what is written on it. Find his profit percentage.[cite: 2]", exam: "(SSC GD 2025)", options: ["37 10/37%", "34 5/37%", "35 5/37%", "36 6/37%"], correct: 2 },
+        { q: "2. A dishonest shopkeeper professes to sell grains at the cost price, but he uses a weight of 920 gm for 1 kg weight. Find his gain percentage (round up to two decimal places).[cite: 2]", exam: "SSC CHSL 2023 PRE", options: ["8.50%", "8.70%", "7.80%", "7.90%"], correct: 1 },
+        { q: "3. Sohan sells sugar at the cost price but uses false weights thus gaining 28% profit. How many grams of sugar is he giving for 3.2 kg sugar?[cite: 2]", exam: "(CHSL MAINS 2023)", options: ["1500", "1900", "2200", "2500"], correct: 3 },
+        { q: "4. A seller uses faulty weight in place of a 2 kg weight and earns a 25% profit. He claims that he is selling on the cost price in front of the customers but uses a faulty weight. How much error is there in the 2 kg weight to gain 25%?[cite: 2]", exam: "", options: ["250 g", "400 g", "500 g", "300 g"], correct: 1 },
+        { q: "5. A dishonest shopkeeper pretends to sell his goods at cost price. However, he uses a false weight on which 984 gm is written, but actually weights lesser. Using the false weight, the shopkeeper makes a gain of 23%. The actual measure of the weight used is?[cite: 2]", exam: "(RRB ALP 2024)", options: ["935 gm", "800 gm", "850 gm", "900 gm"], correct: 1 },
+        { q: "6. A shopkeeper sells his goods at cost price. If by using false weights he gains 3 19/27%, then what weight does he use for 1kg (in gm, rounded off to 2 decimal places)?[cite: 2]", exam: "(RRB JE 2025)", options: ["987.35", "964.29", "938.99", "954.79"], correct: 1 },
+        { q: "7. A man marks up his goods by 15% but he gives 920gm instead of 1kg to his customer. Find his profit%?[cite: 2]", exam: "", options: ["20%", "25%", "40%", "33.33%"], correct: 1 },
+        { q: "8. A grocer sells pulses at a profit of 13% and uses weights which are 24% less than the market weight. The percentage of profit (correct to 2 decimal places) earned by him will be:[cite: 2]", exam: "(SSC SELECTION POST XI 2023)", options: ["45.56%", "37.75%", "48.68%", "42.35%"], correct: 2 },
+        { q: "9. Subir claimed to sell his items at only 5% above the cost of production, but used a weight that had 1 kg written on it, though it actually weighed 960 grams. What was the actual profit percentage earned by Subir?[cite: 2]", exam: "", options: ["9.125%", "9.375%", "9.25%", "9.5%"], correct: 1 },
+        { q: "10. A shopkeeper uses 940 gm weight in place of one kg weight. He sells it at 4% profit. What will be the actual profit percentage? (rounded off to two decimal places)[cite: 2]", exam: "SSC CGL 2023 PRE", options: ["9.25%", "10.32%", "10.64%", "10.96%"], correct: 2 },
+        { q: "11. A shopkeeper sells goods at 82% loss on cost price but uses 28% less weight. What is his percentage profit or loss?[cite: 2]", exam: "[SSC Selection Post (Phase-XII)]", options: ["54% profit", "75% loss", "75% profit", "54% loss"], correct: 1 },
+        { q: "12. A dishonest dealer sells the goods at 7% loss on cost price but uses 18% less weight. What is his percentage of profit? (Correct to 2 decimal places)[cite: 2]", exam: "(SSC CGL 2022)", options: ["25.65%", "12.82%", "28.75%", "13.41%"], correct: 3 },
+        { q: "13. A vendor claims to sell wheat at a loss of 35%. But he cheats by using weights that weigh 60% less than what is mentioned on them. What is his profit percentage (rounded off to 2 decimal places)?[cite: 2]", exam: "(RRB RPF SI 2024)", options: ["64.56", "62.50", "57.39", "58.64"], correct: 0 },
+        { q: "14. A dishonest merchant sells goods at a 12.5% loss on the cost price, but uses 28 g weight instead of 36 g. What is his percentage profit or loss?[cite: 2]", exam: "(SSC CGL 2022)", options: ["6.25% loss", "12.5% gain", "18.75% gain", "10.5% loss"], correct: 1 },
+        { q: "15. A trader claims to sell vegetables at a profit of 57%, but also dishonestly uses a weight which is 13% less than what is mentioned on it. Find the total percentage of profit earned by the trader. (Round off the answer to the nearest whole number.)[cite: 2]", exam: "(RRB NTPC 12th LEVEL 2025)", options: ["85%", "79%", "80%", "75%"], correct: 2 },
+        { q: "16. A vendor started selling vegetables at 10 per kg, but couldn't find buyers at this rate. So he reduced the price to 7.2 per kg, but uses a faulty weight of 900g instead of 1 kg. Find the percentage change in the actual price.[cite: 2]", exam: "(SSC CGL 2024 Pre)", options: ["10%", "15%", "20%", "25%"], correct: 2 },
+        { q: "17. A silver shop owner claims that he is selling silver at Rs. 65/gm when cost price is Rs. 70/gm but he is giving 900 mg instead of 1 gm. The percentage of profit or loss of the shop owner is?[cite: 2]", exam: "(SSC GD 2022)", options: ["3.27% loss", "3.07% profit", "3.17% profit", "3.12% loss"], correct: 2 },
+        { q: "18. A dishonest shopkeeper sells sugar at a rate of Rs. 45 per kg. The cost price of the sugar is Rs. 40 per kg. Even after doing this, he tries to increase his profit by removing 100 gm from each packet of 1 kg. What is the gain percent of the shopkeeper?[cite: 2]", exam: "", options: ["35%", "30%", "20%", "25%"], correct: 3 },
+        { q: "19. A shopkeeper professes to sell sugar costing Rs 40/kg at Rs 42/kg but gives only 550 gm sugar in place of 600 gm using faulty weighing machine. His profit percentage (correct to 2 decimal places)?[cite: 2]", exam: "(CHSL 2023 PRE)", options: ["14.54%", "15.54%", "15.45%", "16.45%"], correct: 0 },
+        { q: "20. A dishonest trader marks his goods 50% more and then allows a discount of 20% on its marked price. Additionally he uses a faulty scale which shows 1 kg for 900 gm. What will be his net profit percentage (rounded off to the nearest integer)?[cite: 2]", exam: "", options: ["33", "36", "27", "24"], correct: 0 },
+        { q: "21. A shopkeeper gives a discount of 12% on the purchase of 10 kg of sugar. The cost price of the sugar is Rs. 30/kg and the marked price is Rs. 38/kg. The weighing machine of the shopkeeper is faulty, and it shows weight of 1 kg when the actual weight is 900 grams. Find the percentage profit of the shop keeper (rounded off to two decimal places).[cite: 2]", exam: "SSC CPO Pre 2024", options: ["30.18%", "12.5%", "22.25%", "23.85%"], correct: 3 },
+        { q: "22. A shopkeeper sells his items using a faulty balance which measures 25% less. He then marks up his items 15% above the cost price. If he also gives a discount of 10%, then find his net profit percentage on 1 kg items.[cite: 2]", exam: "", options: ["32%", "41%", "44%", "38%"], correct: 3 },
+        { q: "23. A shopkeeper gives a discount of 25% on the purchase of 10 kg of rice. The cost price of the rice is Rs. 65/kg and the marked price is Rs. 80/kg. The weighing machine of the shopkeeper is faulty, and it shows weight of 1 kg when the actual weight is 800 grams, find the percentage profit of the shopkeeper?[cite: 2]", exam: "", options: ["19.21%", "19.54%", "15.38%", "17.91%"], correct: 2 },
+        { q: "24. A shopkeeper marks up his goods 35% above the CP and gives 23% discount to the customer. At the time of buying he uses 1120 gm instead of 1kg and At the time of selling the goods he gives 880 gm weight instead of 1kg. find his profit %?[cite: 2]", exam: "", options: ["35.6%", "29.41%", "33.33%", "32.3%"], correct: 3 },
+        { q: "25. A shopkeeper professes to sell his goods at the cost price, but he uses false weights with which he cheats by 10% while buying and by 15% while selling. His overall percentage of profit or loss is:[cite: 2]", exam: "", options: ["26.5%", "27.7%", "22.72%", "25%"], correct: 3 },
+        { q: "26. A trader cheats both his supplier and his customer by using faulty weights. When he buys from the supplier, he takes 20% more than the indicated weight. When he sells to his customer, he gives 20% less than the indicated weight. If he sells his articles at the cost price, what is his net profit%?[cite: 2]", exam: "", options: ["50%", "66 2/3%", "44%", "44 4/9%"], correct: 0 },
+        { q: "27. A dishonest shopkeeper sells rice at a cost price but makes a 25% profit by using faulty weights. He decides to give a discount to attract more customers. What per cent of discount should he offer to make 10% profit?[cite: 2]", exam: "(CHSL MAINS 2023)", options: ["11%", "12%", "10%", "9%"], correct: 1 },
+        { q: "28. A trader sells his goods to a customer at a profit of K% over CP. Besides it he gives 880gm instead of 1kg his overall profit is 25% find the value of k?[cite: 2]", exam: "", options: ["8.33", "10", "12.5", "15"], correct: 1 },
+        { q: "29. S buys sugar for Rs 40 per kg and sells at Rs X per kg. due to a fault in the weighing machine, it shows 1 kg when the actual weight is 800 gm. What is the value of x per kg if his profit percentage is 30%?[cite: 2]", exam: "", options: ["52.1", "46.1", "48.6", "41.6"], correct: 3 },
+        { q: "30. Vasudha claimed to sell her items at 18% above the cost of production, but used a weight that had 1 kg written on it, though it actually weighted y grams. If the actual profit percentage earned by Vasudha was 33 1/3%, what is the value of y?[cite: 2]", exam: "(SSC MTS 2024)", options: ["885", "890", "895", "880"], correct: 0 },
+        { q: "31. A shopkeeper professes to sell his goods at a 35% loss but uses a false balance and gains 75%. The actual weight (rounded off to one decimal place) he uses for 1 kg is:[cite: 2]", exam: "", options: ["371.4 gm", "374.5 gm", "372.9 gm", "376.5 gm"], correct: 0 },
+        { q: "32. A merchant purchases a cloth at a rate of Rs 100 per meter and receives 5 cm length of clothe free for every 100 cm length of clothe purchased by him. He sells the same cloth at a rate of Rs 110 per meter but cheats his customers by giving 95 cm length of cloth for every 100 cm length of cloth purchased by the customers. If the merchant provides a 5% discount, the resulting profit earned by him is?[cite: 2]", exam: "(CAT 2023)", options: ["9.7%", "15.5%", "16%", "4.2%"], correct: 1 },
+        { q: "33. A shopkeeper advertises for selling cloth at 7% loss. However, by using a false scale of length 1 metre he actually gains 24%. What will be the actual length he uses instead of 1 metre?[cite: 2]", exam: "(SSC CGL 2022)", options: ["75 cm", "31 cm", "76 cm", "93 cm"], correct: 0 },
+        { q: "34. During the lockdown, a state government gives 4.5 kg of rice to each person of a family at a cost price of Rs. 40 per kg. But the distributor uses false weight of 3.75 kg instead of 4.5 kg and distributes the rice. The accumulated rice was sold in the black market at double the price. He showed the government that he distributed 2700 kg of rice. When caught, he was made to pay a fine of 125% of what he earned in the black market. What was his fine amount?[cite: 2]", exam: "[SSC Selection Post (Phase-XII)]", options: ["Rs. 54,000", "Rs. 45,000", "Rs. 28,000", "Rs. 36,000"], correct: 1 },
+        { q: "35. A shopkeeper has a fault of 100 g in a 3 kg weight. He sold 3 kg of potatoes to Charu using the same faulty weight for 46. The cost price of the potatoes for the seller was 12 per kg. How much profit (in) did he earn on the potatoes?[cite: 2]", exam: "SSC CGL PRE 2024", options: ["11.6", "10.2", "11.2", "10"], correct: 2 },
+        { q: "36. The cost price of pulses is 12% less than the selling price. Using a faulty weighing machine, shopkeeper is able to earn 25% profit. How much percent of the faulty machine shows more weight as compared to the actual weight?[cite: 2]", exam: "", options: ["10%", "14%", "13%", "15%"], correct: 0 },
+        { q: "37. A dishonest shopkeeper sells rice at a cost price but makes a 25% profit by using faulty weights. He decides to give a discount to attract more customers. What per cent of discount should he offer to make 10% profit?[cite: 2]", exam: "(CHSL MAINS 2023)", options: ["11%", "12%", "10%", "9%"], correct: 1 },
+        { q: "38. B purchased 15 kg apples at the rate of 180 per kg from a wholesaler who uses a weight of 950 grams for the kg weight. B sold all these apples at 180 per kg but used a weight of 750 grams for the kg weight. Find the percentage profit earned by B in the transaction (correct to 2 places of decimal).[cite: 2]", exam: "(SSC CGL MAINS 2023)", options: ["25.75%", "26.67%", "22.55%", "33.33%"], correct: 1 },
+        { q: "39. R's weighing machine shows 400 gm when the actual weight is 350 gm. The cost price of almonds is 880 per kg and packets of 200 gm are made using the faulty machine. What should be the selling price (in) of each packet to get a profit of 25%?[cite: 2]", exam: "(SSC CGL 2023)", options: ["197.50", "175.50", "182.50", "192.50"], correct: 3 },
+        { q: "40. The cost price and selling price of rice are the same. Due to a faulty weighing machine, the seller earns a 15% profit. If Rs x is the cost price of 1000 gm rice and the machine is changed which shows 1000 gm instead of 950 gm, what should be the selling price (in Rs.) now to get the same percentage of profit?[cite: 2]", exam: "(SSC CGL 2023)", options: ["1.0295x", "1.0259x", "1.0925x", "1.0950x"], correct: 2 },
+        { q: "41. A reduction of 7.5% in the cost price of a commodity enables a shopkeeper to purchase 15 kg more than what he previously purchased for a sum of Rs. 7,400. In order to make a profit of 32.5% on the pre-reduction cost price of the commodity, at what price (in Rs.) per kg should the commodity be sold?[cite: 2]", exam: "SSC CPO Pre 2024", options: ["54", "53", "52", "51"], correct: 1 },
+        { q: "42. A retailer announces a discount of 25% for selling a mobile phone marked at 48,000. The cost price of the mobile phone is 45% below the marked price. He offers a further discount of 7.5% if the buyer returns his old mobile phone. What is the ratio of the profit percentages of the retailer with the return of the old mobile phone scheme to that of without the return of the old mobile phone, respectively?[cite: 2]", exam: "(SSC MTS 2024)", options: ["32:23", "12:11", "11:12", "23:32"], correct: 3 },
+        { q: "43. Ramanna purchased raw materials for a certain price to manufacture a product. However, owing to shortage of labour, 22.5% of the raw materials could not be utilised and got wasted. 80% of the cost of raw materials used was added as the cost of manufacturing. If Ramanna could sell his product at a price to earn an overall profit of 20% after offering a discount of 20%, how many times of the total cost of the raw materials purchased was the marked price of the product?[cite: 2]", exam: "SSC CPO Pre 2024", options: ["2.44 times", "2.42 times", "2.43 times", "2.40 times"], correct: 2 },
+        { q: "44. Aman bought two chairs for 1,800. He sold the first chair at a 12% profit and the second one at a 20% profit. Had he sold the first chair at a 20% profit and the second one at a 12% profit, he would have received 36 more. Find the difference between the cost-price of the two chairs.[cite: 2]", exam: "(DP CONSTABLE 2023)", options: ["Rs. 450", "Rs. 675", "Rs. 650", "Rs. 525"], correct: 0 },
+        { q: "45. By selling a sofa set Rs. 25800 and a table for Rs. 5000, a shopkeeper gains 10% on the whole transaction. However, if he sells the sofa set for Rs. 22500 and the table for its original cost, he losses 5%. What is the original cost of the table?[cite: 2]", exam: "[DELHI POLICE CONSTABLE]", options: ["Rs. 3834", "Rs. 4750", "Rs. 4100", "Rs. 3500"], correct: 2 },
+        { q: "46. Marked price of A is Rs. 1600 more than its cost price. When discount on A is Rs 500, then a profit of 25% is obtained. At what price should A be sold to obtain a 40% profit?[cite: 2]", exam: "(SBI CLERK 2019)", options: ["7000", "5000", "5600", "5720"], correct: 0 },
+        { q: "47. A man sells a table at 15% profit and a chair at 12% loss and earns 810 as profit. If he sells the table at 12% loss and chair at 15% profit then he bears no profit no loss. Find the cost price of chair?[cite: 2]", exam: "(DELHI POLICE CONSTABLE 2022)", options: ["Rs. 15000", "Rs. 12000", "Rs. 10000", "Rs. 8000"], correct: 1 },
+        { q: "48. One saree was purchased for Rs 644 after getting a discount of 8% and another saree was purchase for Rs 594 after getting a discount of 1%. Taking both the items as a single transaction, what is the percentage of discount?[cite: 2]", exam: "DSSSB ASSISTANT GRADE-III 2024", options: ["4.77%", "5.67%", "7%", "5%"], correct: 0 },
+        { q: "49. The cost price (including making charges) of a necklace is 2,50,000, and Amit wants to make 15% profit by selling it. At the time of the sale, he declares a discount of 5% on the making charges of the necklace. If making charges are 20,000, what is the marked price of the necklace?[cite: 2]", exam: "", options: ["2,77,500", "2,87,500", "2,97,500", "2,88,500"], correct: 3 },
+        { q: "50. If books bought at prices ranging from Rs 200 to Rs 350 are being sold at prices ranging from Rs 300 to Rs 450, what is the highest possible profit that might be made in selling 8 books?[cite: 2]", exam: "(SSC GD 2022)", options: ["Rs. 1600", "Rs. 2000", "Rs. 400", "Rs. 1800"], correct: 1 },
+        { q: "51. The cost of 4 rings and 2 bangles of gold is 40,000. What is the cost of 10 rings and 5 bangles?[cite: 2]", exam: "SSC CHSL 2023 PRE", options: ["90,000", "1,20,000", "80,000", "1,00,000"], correct: 3 },
+        { q: "52. The cost of 2 pencils and 3 pens is 55 and the cost of 7 pencils and 2 pens is 65. What is the total price (in ) of one pen and one pencil?[cite: 2]", exam: "(SSC CGL MAINS 2023)", options: ["25", "20", "15", "12"], correct: 1 },
+        { q: "53. The cost of 4 chairs and 3 tables is 2,100 and the cost of 5 chairs and 2 tables is 1,750. Find the cost (in) of a chair.[cite: 2]", exam: "(CHSL MAINS 2023)", options: ["150", "130", "140", "125"], correct: 0 },
+        { q: "54. The total cost price of ten refrigerators and four mobile phones is 2,10,000, while the total cost price of six refrigerators and two mobile phones is 1,22,000. What will be the cost price (in Rs.) of a refrigerator and two mobile phones?[cite: 2]", exam: "", options: ["35200", "37000", "36000", "34500"], correct: 1 },
+        { q: "55. 3 chairs and 15 tables cost 6300 and 7 chairs and 12 tables cost 7800. What is the cost of 11 chairs and 16 tables?[cite: 2]", exam: "(RRB Section Controller 2025)", options: ["₹11404", "11398", "₹11400", "11397"], correct: 2 },
+        { q: "56. From a bus stand in Bhagyanagar, if we buy 2 tickets to Lingampalli and 3 tickets to Hi-tech city, the total cost is 111; however, if we buy 4 tickets to Lingampalli and 5 tickets to Hi-tech city, the total cost is 197. The fare from the bus stand to Hi-tech city is how much more that the fare from the bus stand to Lingampalli?[cite: 2]", exam: "(ICAR Technician 2023)", options: ["8", "7", "9", "6"], correct: 1 },
+        { q: "57. The cost of 16 pens is equal to the cost of 21 pencils. If the cost of a pen is decreased by 33 1/3% and the cost of a pencil remains the same, then the cost of 9 pens and 5 pencils is Rs 103. What is the total (original) cost of 2 pens and 3 pencils?[cite: 2]", exam: "", options: ["Rs. 48", "Rs. 42", "Rs. 45", "Rs. 52"], correct: 0 },
+        { q: "58. The cost of 6 pens and 5 pencils is 259. If the cost of a pen decreases by 9 and the cost of a pencil increases by 4, then the cost of 19 pens and 2 pencils is 90. What is the original cost of 13 pens and 2 pencils?[cite: 2]", exam: "(RRB NTPC GRADUATE LEVEL 2025 CBT-1)", options: ["202", "199", "₹195", "197"], correct: 1 },
+        { q: "59. The cost of 3 pens and 2 pencils is Rs 102. When the cost of a pen is reduced by Rs 2.50 and that of a pencil is increased by Rs 1.50, then the cost of 4 pens and 3 pencils is Rs 132. What is the original cost of 5 pens and 4 pencils?[cite: 2]", exam: "", options: ["Rs. 168", "Rs. 163", "Rs. 171", "Rs. 173"], correct: 3 },
+        { q: "60. The total cost of 3 pens and 4 notebooks is 235. If the cost of the pen is decreased by 20% and that of the notebook is increased by 10%, then the total cost of 2 pens and 3 notebooks will be 172. What is the total original cost (in) of 7 pens and 5 notebooks?[cite: 2]", exam: "(ICAR Technician 2023)", options: ["375", "365", "355", "385"], correct: 0 },
+        { q: "61. Cost of 4 pens, 6 note books and 9 files is Rs. 305. Cost of 3 pens, 4 notebooks and 2 files is Rs. 145. What is the cost (in Rs.) of 5 pens, 8 notebooks and 16 files?[cite: 2]", exam: "", options: ["415", "465", "440", "CND"], correct: 1 },
+        { q: "62. Aditya sold article X at a profit of 23% and article Y at a loss of 13%. He earned a profit of 180 in the entire transaction. If article X costs 90 less than article Y, then what is the price of article Y (in)?[cite: 2]", exam: "(SSC CPO 2024)", options: ["2,007", "2,050", "2,100", "2,020"], correct: 0 },
+        { q: "63. Cindy bought 15 apples and 12 oranges and paid a sum of 447 for the purchase. Which of the statements given below is inconsistent with the information given in the previous statement, leading to no possible prices of the two fruits?[cite: 2]", exam: "(SSC CGL 2024 Pre)", options: ["Purchased 25 apples and 20 oranges and paid a sum of 745", "Purchased 10 apples and 13 oranges and paid a sum of 353", "Purchased 12 apples and 8 oranges and paid a sum of 340", "Purchased 35 apples and 28 oranges and paid a sum of ₹1,029"], correct: 3 }
+    ];
+
+    let currentScore = 0;
+    const totalQuestions = quizData.length;
+    const labels = ["A. ", "B. ", "C. ", "D. "];
+
+    const quizListElement = document.getElementById("quiz-list");
+    document.getElementById("total-score").innerText = totalQuestions;
+
+    quizData.forEach((data, qIndex) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+
+        const questionText = document.createElement("h3");
+        questionText.className = "question-text";
+        
+        if (data.exam) {
+            questionText.innerHTML = `${data.q} <span class="exam-tag">${data.exam}</span>`;
+        } else {
+            questionText.innerText = data.q;
+        }
+        
+        card.appendChild(questionText);
+
+        const optionsGrid = document.createElement("div");
+        optionsGrid.className = "options-grid";
+
+        const feedbackBox = document.createElement("div");
+        feedbackBox.className = "feedback-box";
+
+        data.options.forEach((optionText, oIndex) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = labels[oIndex] + optionText;
+
+            btn.onclick = () => handleAnswer(btn, oIndex, data.correct, optionsGrid, feedbackBox, data);
+            
+            optionsGrid.appendChild(btn);
+        });
+
+        card.appendChild(optionsGrid);
+        card.appendChild(feedbackBox);
+        quizListElement.appendChild(card);
+    });
+
+    function handleAnswer(selectedBtn, selectedIndex, correctIndex, optionsGrid, feedbackBox, data) {
+        const allButtons = optionsGrid.querySelectorAll(".option-btn");
+
+        allButtons.forEach(btn => btn.disabled = true);
+
+        if (selectedIndex === correctIndex) {
+            selectedBtn.classList.add("correct");
+            currentScore++;
+            feedbackBox.innerText = `Correct!`;
+        } else {
+            selectedBtn.classList.add("wrong");
+            allButtons[correctIndex].classList.add("correct");
+            feedbackBox.innerText = `Incorrect. The correct answer is ${labels[correctIndex]} ${data.options[correctIndex]}`;
+            feedbackBox.style.color = "#991b1b";
+            feedbackBox.style.backgroundColor = "#fee2e2";
+        }
+
+        feedbackBox.style.display = "block";
+    }
+
+    function showFinalScore() {
+        document.getElementById("submit-btn").style.display = "none";
+        document.getElementById("final-score").innerText = currentScore;
+        document.getElementById("final-score-container").style.display = "block";
+        
+        document.getElementById("final-score-container").scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+</script>
+
+</body>
+</html>
